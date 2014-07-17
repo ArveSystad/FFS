@@ -51,6 +51,7 @@
     <Compile Include="Ffs.cs" />
     <Compile Include="FileUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResponseRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

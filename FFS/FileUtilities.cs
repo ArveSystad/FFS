@@ -8,7 +8,7 @@ namespace FFS
         {
             var strings = path.Split(new [] { '.' });
             if (strings.Length == 1)
-                return null;
+                return "html";
             return strings.Last();
         }
 
@@ -16,13 +16,18 @@ namespace FFS
         {
             switch (type)
             {
-                case null:
+                case "html":
                     return "text/html";
                 case "css":
                     return "text/css";
                 default:
                     return "text/plain";
             }
+        }
+
+        public static byte[] GetBytes(string str)
+        {
+            return System.Text.Encoding.UTF8.GetBytes(str);
         }
     }
 }
