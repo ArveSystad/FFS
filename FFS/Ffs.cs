@@ -18,26 +18,13 @@ namespace FFS
         {
             var path = context.Request.Path.Value;
             var type = FileUtilities.GetType(path);
-            context.Response.ContentType = GetMimetype(type);
+            context.Response.ContentType = FileUtilities.GetMimetype(type);
             if (type == null)
                 context.Response.WriteAsync(RenderPage(path));
             else
                 context.Response.WriteAsync(RenderResource(path, type));
         }
-
-        private string GetMimetype(string type)
-        {
-            switch (type)
-            {
-                case null:
-                    return "text/html";
-                case "css":
-                    return "text/css";
-                default:
-                    return "text/plain";
-            }
-        }
-
+        
         public Byte[] RenderResource(string path, string extension)
         {
             return File.ReadAllBytes(BaseResourcesPath + path);

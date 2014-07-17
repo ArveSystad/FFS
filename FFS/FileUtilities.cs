@@ -11,5 +11,18 @@ namespace FFS
                 return null;
             return strings.Last();
         }
+
+        public static string GetMimetype(string type)
+        {
+            switch (type)
+            {
+                case null:
+                    return "text/html";
+                case "css":
+                    return "text/css";
+                default:
+                    return "text/plain";
+            }
+        }
     }
 }
