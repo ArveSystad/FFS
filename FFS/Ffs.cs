@@ -7,24 +7,29 @@ namespace FFS
 {
     public class Ffs : OwinMiddleware
     {
-        public Ffs(OwinMiddleware next)
-            : base(next)
-        {
-        }
+        public Ffs(OwinMiddleware next) : base(next) { }
+
+        public string DefaultLayoutPath { get { return Environment.CurrentDirectory + "\\..\\..\\Pages\\_Layout.html"; } }
 
         public void WriteHtmlContent(IOwinContext context)
         {
             var path = context.Request.Path.Value;
             context.Response.ContentType = "text/html";
             if (path == "/")
-                context.Response.WriteAsync(GetFileContent("index.html"));
+                context.Response.WriteAsync(RenderPage("index.html"));
             else
-                context.Response.WriteAsync(GetFileContent("Pages\\" + path + ".html"));
+                context.Response.WriteAsync(RenderPage("Pages\\" + path + ".html"));
         }
 
-        private byte[] GetFileContent(string path)
+        private string RenderPage(string path)
         {
-            return File.ReadAllBytes(Environment.CurrentDirectory + "\\..\\..\\" + path);
+            var fileContent = File.ReadAllText(Environment.CurrentDirectory + "\\..\\..\\" + path);
+            if (File.Exists(DefaultLayoutPath))
+            {
+                var allText = File.ReadAllText(DefaultLayoutPath);
+                return allText.Replace("{{body}}", fileContent);
+            }
+            return fileContent;
         }
 
         public async override Task Invoke(IOwinContext context)

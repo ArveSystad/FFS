@@ -63,7 +63,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="index.html" />
+    <Content Include="Pages\Somepage.html" />
     <Content Include="Pages\Test\About.html" />
+    <Content Include="Pages\_Layout.html" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FFS\FFS.csproj">
