@@ -9,21 +9,46 @@ namespace FFS
     {
         public Ffs(OwinMiddleware next) : base(next) { }
 
-        public string DefaultLayoutPath { get { return Environment.CurrentDirectory + "\\..\\..\\Pages\\_Layout.html"; } }
+        public string BasePagePath { get {  return Environment.CurrentDirectory + "\\..\\..\\Pages\\";} }
+        public string BaseResourcesPath { get { return Environment.CurrentDirectory + "\\..\\..\\Resources\\"; } }
+        
+        public string DefaultLayoutPath { get { return BasePagePath+ "_Layout.html"; } }
 
         public void WriteHtmlContent(IOwinContext context)
         {
             var path = context.Request.Path.Value;
-            context.Response.ContentType = "text/html";
-            if (path == "/")
-                context.Response.WriteAsync(RenderPage("index.html"));
+            var type = FileUtilities.GetType(path);
+            context.Response.ContentType = GetMimetype(type);
+            if (type == null)
+                context.Response.WriteAsync(RenderPage(path));
             else
-                context.Response.WriteAsync(RenderPage("Pages\\" + path + ".html"));
+                context.Response.WriteAsync(RenderResource(path, type));
+        }
+
+        private string GetMimetype(string type)
+        {
+            switch (type)
+            {
+                case null:
+                    return "text/html";
+                case "css":
+                    return "text/css";
+                default:
+                    return "text/plain";
+            }
+        }
+
+        public Byte[] RenderResource(string path, string extension)
+        {
+            return File.ReadAllBytes(BaseResourcesPath + path);
         }
 
         private string RenderPage(string path)
         {
-            var fileContent = File.ReadAllText(Environment.CurrentDirectory + "\\..\\..\\" + path);
+            if (path == "/")
+                path = "/index";
+
+            string fileContent = File.ReadAllText(BasePagePath + path + ".html");
             if (File.Exists(DefaultLayoutPath))
             {
                 var allText = File.ReadAllText(DefaultLayoutPath);

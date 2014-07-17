@@ -62,10 +62,11 @@
     <None Include="Readme.md" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="index.html" />
+    <Content Include="Pages\index.html" />
     <Content Include="Pages\Somepage.html" />
     <Content Include="Pages\Test\About.html" />
     <Content Include="Pages\_Layout.html" />
+    <Content Include="Resources\styles.css" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FFS\FFS.csproj">
@@ -73,6 +74,7 @@
       <Name>FFS</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
